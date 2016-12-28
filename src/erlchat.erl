@@ -55,7 +55,7 @@ test_func(_Msg) ->
 	ok.
 
 send(_Node, _Msg) ->
-        _Host = node(),
+	 _Host = node(),
 	_MsgStr = string:concat(io_lib:build_text([_Host]), _Msg),
 	rpc:cast(_Node, erlchat, test_func, [_MsgStr]),
 	ok.
