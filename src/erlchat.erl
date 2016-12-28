@@ -50,11 +50,13 @@ code_change(_OldVsn, State, _Extra) ->
 %% ------------------------------------------------------------------
 %% Internal Function Definitions
 %% ------------------------------------------------------------------
-test_func(Test) ->
-     	?SERVER ! Test,
+test_func(_Msg) ->
+     	?SERVER ! _Msg,
 	ok.
 
 send(_Node, _Msg) ->
-	rpc:cast(_Node, erlchat, test_func, [_Msg]),
+        _Host = node(),
+	_MsgStr = string:concat(io_lib:build_text([_Host]), _Msg),
+	rpc:cast(_Node, erlchat, test_func, [_MsgStr]),
 	ok.
  
