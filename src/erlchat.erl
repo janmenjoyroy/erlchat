@@ -8,6 +8,7 @@
 
 -export([start_link/0]).
 -export([test_func/1]).
+-export([send/2]).
 
 %% ------------------------------------------------------------------
 %% gen_server Function Exports
@@ -52,3 +53,8 @@ code_change(_OldVsn, State, _Extra) ->
 test_func(Test) ->
      	?SERVER ! Test,
 	ok.
+
+send(_Node, _Msg) ->
+	rpc:cast(_Node, erlchat, test_func, [_Msg]),
+	ok.
+ 
