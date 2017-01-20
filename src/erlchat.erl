@@ -38,7 +38,10 @@ handle_cast(_Msg, State) ->
     {noreply, State}.
 
 handle_info(_Info, State) ->
-    io:format("RX ~p~n", [_Info]),
+    Host = element(1, _Info),
+    Msg  = element(2, _Info), 
+    io:format("RX (~p): ", [Host]),
+    io:format("~p~n", [Msg]),
     {noreply, State}.
 
 terminate(_Reason, _State) ->
@@ -50,13 +53,13 @@ code_change(_OldVsn, State, _Extra) ->
 %% ------------------------------------------------------------------
 %% Internal Function Definitions
 %% ------------------------------------------------------------------
-test_func(_Msg) ->
-     	?SERVER ! _Msg,
+test_func(_MsgTup) ->
+     	?SERVER ! _MsgTup,
 	ok.
 
 send(_Node, _Msg) ->
-	 _Host = node(),
-	_MsgStr = string:concat(io_lib:build_text([_Host]), _Msg),
-	rpc:cast(_Node, erlchat, test_func, [_MsgStr]),
-	ok.
+    _Host   = node(),
+    _MsgTup = {_Host, _Msg},
+    rpc:call(_Node, erlchat, test_func, [_MsgTup]),
+    ok.
  
